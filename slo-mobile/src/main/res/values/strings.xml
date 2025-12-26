@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">SLO at a Glance</string>
+
+    <!-- Menu Actions -->
+    <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_about">About</string>
+
+    <!-- Main Screen -->
+    <string name="filter_by_status">Filter by Status</string>
+    <string name="filter_by_entity_type">Filter by Entity Type</string>
+    <string name="filter_all">All</string>
+    <string name="filter_green">Green</string>
+    <string name="filter_yellow">Yellow</string>
+    <string name="filter_red">Red</string>
+    
+    <!-- Entity Types -->
+    <string name="entity_application">Application</string>
+    <string name="entity_website">Website</string>
+    <string name="entity_synthetic">Synthetic</string>
+    <string name="entity_infrastructure">Infrastructure</string>
+
+    <!-- Status -->
+    <string name="status_healthy">Healthy</string>
+    <string name="status_warning">Warning</string>
+    <string name="status_critical">Critical</string>
+    <string name="status_unknown">Unknown</string>
+
+    <!-- SLO Detail -->
+    <string name="slo_detail_title">SLO Details</string>
+    <string name="slo_metrics">SLO Metrics</string>
+    <string name="sli_label">SLI (Current)</string>
+    <string name="slo_target_label">SLO Target</string>
+    <string name="total_error_budget_label">Total Error Budget</string>
+    <string name="error_budget_remaining_label">Error Budget Remaining</string>
+    <string name="error_budget_percentage_label">Remaining Percentage</string>
+    <string name="error_budget_chart_title">Error Budget Trend</string>
+    <string name="error_budget_remaining">Error Budget Remaining</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="api_configuration">API Configuration</string>
+    <string name="api_endpoint_title">API Endpoint</string>
+    <string name="api_endpoint_summary">Instana API base URL</string>
+    <string name="api_endpoint_message">Enter the Instana API endpoint URL (e.g., https://instana.io)</string>
+    <string name="api_token_title">API Token</string>
+    <string name="api_token_summary">Your Instana API token</string>
+    <string name="api_token_message">Enter your Instana API token for authentication</string>
+    <string name="validate_button">Validate</string>
+    <string name="validate_api_title">API Validation</string>
+    <string name="validating_api">Validating API configuration…</string>
+    <string name="validation_success">API validation successful!\n\nVersion: %s</string>
+    <string name="validation_failed">API validation failed: %s</string>
+    
+    <string name="display_settings">Display Settings</string>
+    <string name="yellow_threshold_title">Yellow Threshold(Error budget %)</string>
+    <string name="yellow_threshold_summary">Error budget percentage for yellow status</string>
+    <string name="yellow_threshold_message">Enter the threshold percentage (0-100) for yellow status. When error budget remaining falls below this percentage, the traffic light will turn yellow.</string>
+    
+    <string name="slo_selection_title">Select SLOs to Display</string>
+    <string name="slo_selection_summary">Choose which SLOs to show on the main screen</string>
+    <string name="slo_selection_dialog_title">Select SLOs</string>
+    <string name="slo_selection_loading">Loading SLOs…</string>
+    <string name="slo_selection_error">Error loading SLOs. Please check your API configuration.</string>
+    <string name="slo_selection_none">No SLOs selected (none will be shown)</string>
+    <string name="slo_selection_count">%d SLO(s) selected</string>
+    <string name="slo_selection_search_hint">Search SLOs…</string>
+    
+    <string name="advanced_settings">Advanced</string>
+    <string name="reset_defaults_title">Reset to Defaults</string>
+    <string name="reset_defaults_summary">Restore default settings</string>
+    <string name="reset_defaults_message">Are you sure you want to reset all settings to their default values? This will not clear your API token.</string>
+    <string name="clear_data_title">Clear All Data</string>
+    <string name="clear_data_summary">Clear all settings and credentials</string>
+    <string name="clear_data_message">Are you sure you want to clear all data? This will remove your API credentials and reset all settings.</string>
+    
+    <string name="about_category">About</string>
+    <string name="app_version_title">Version</string>
+    <string name="app_version_summary">1.0</string>
+
+    <!-- Welcome Dialog -->
+    <string name="welcome_title">Welcome to SLO at a Glance</string>
+    <string name="welcome_message">To get started, please configure your Instana API credentials in Settings.</string>
+    <string name="configure_now">Configure Now</string>
+    <string name="later">Later</string>
+
+    <!-- About Dialog -->
+    <string name="about_title">About SLO at a Glance</string>
+    <string name="about_message">SLO at a Glance is a mobile application for monitoring Instana Service Level Objectives (SLOs) using an intuitive traffic light visualization.\n\nVersion: 1.0\n\nDeveloped for Instana API integration.</string>
+
+    <!-- Messages -->
+    <string name="no_slos_found">No SLOs found</string>
+    <string name="error_loading_slos">Error loading SLOs</string>
+    <string name="loading_slos">Loading SLOs…</string>
+    <string name="error_loading_report">Error loading SLO report</string>
+    <string name="error_not_configured">Please configure API credentials in Settings</string>
+    <string name="error_invalid_slo">Invalid SLO ID</string>
+    <string name="error_empty_endpoint">API endpoint cannot be empty</string>
+    <string name="error_empty_token">API token cannot be empty</string>
+    <string name="error_invalid_threshold">Threshold must be between 0 and 100</string>
+    <string name="error_invalid_number">Please enter a valid number</string>
+    
+    <string name="settings_saved">Settings saved</string>
+    <string name="defaults_restored">Default settings restored</string>
+    <string name="data_cleared">All data cleared</string>
+    <string name="not_configured">Not configured</string>
+
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="clear">Clear</string>
+    <string name="traffic_light_icon">Traffic light status icon</string>
+</resources>

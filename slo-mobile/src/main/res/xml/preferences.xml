@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/api_configuration"
+        android:key="api_config">
+
+        <EditTextPreference
+            android:key="api_endpoint"
+            android:title="@string/api_endpoint_title"
+            android:summary="@string/api_endpoint_summary"
+            android:dialogTitle="@string/api_endpoint_title"
+            android:dialogMessage="@string/api_endpoint_message"
+            android:inputType="textUri"
+            app:useSimpleSummaryProvider="false" />
+
+        <EditTextPreference
+            android:key="api_token"
+            android:title="@string/api_token_title"
+            android:summary="@string/api_token_summary"
+            android:dialogTitle="@string/api_token_title"
+            android:dialogMessage="@string/api_token_message"
+            android:inputType="textPassword"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            android:key="validate_api"
+            android:layout="@layout/preference_validate_button"
+            android:selectable="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/display_settings"
+        android:key="display_settings">
+
+        <EditTextPreference
+            android:key="yellow_threshold"
+            android:title="@string/yellow_threshold_title"
+            android:summary="@string/yellow_threshold_summary"
+            android:dialogTitle="@string/yellow_threshold_title"
+            android:dialogMessage="@string/yellow_threshold_message"
+            android:inputType="numberDecimal"
+            android:defaultValue="50"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            android:key="slo_selection"
+            android:title="@string/slo_selection_title"
+            android:summary="@string/slo_selection_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/advanced_settings"
+        android:key="advanced_settings">
+
+        <Preference
+            android:key="reset_defaults"
+            android:title="@string/reset_defaults_title"
+            android:summary="@string/reset_defaults_summary"
+            android:icon="@android:drawable/ic_menu_revert" />
+
+        <Preference
+            android:key="clear_data"
+            android:title="@string/clear_data_title"
+            android:summary="@string/clear_data_summary"
+            android:icon="@android:drawable/ic_menu_delete" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/about_category"
+        android:key="about">
+
+        <Preference
+            android:key="app_version"
+            android:title="@string/app_version_title"
+            android:summary="@string/app_version_summary"
+            android:selectable="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

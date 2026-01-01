@@ -1,6 +1,5 @@
 package io.instana.slo.ui.slodetail;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import io.instana.slo.R;
 import io.instana.slo.data.model.ChartDataPoint;
 import io.instana.slo.data.model.SloReport;
-import io.instana.slo.data.repository.SloRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

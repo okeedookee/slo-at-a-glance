@@ -97,5 +97,3 @@ public class TimeWindow implements Serializable {
                 '}';
     }
 }
-
-// Made with Bob

@@ -152,16 +152,26 @@ public class SloListFragment extends Fragment implements SloAdapter.OnSloClickLi
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "========================================");
+        Log.d(TAG, "Fragment onResume() called");
+        Log.d(TAG, "  isConfigured: " + preferencesManager.isConfigured());
+        Log.d(TAG, "  hasSelectedSlos: " + preferencesManager.hasSelectedSlos());
+        Log.d(TAG, "========================================");
+        
         // Refresh when returning from settings in case selection changed
         if (preferencesManager.isConfigured()) {
             if (preferencesManager.hasSelectedSlos()) {
+                Log.d(TAG, "Reloading SLOs in onResume()");
                 // Reload data to reflect any changes in selection
                 viewModel.loadSlos();
             } else {
+                Log.d(TAG, "No SLOs selected - showing empty view");
                 // No SLOs selected - clear the list and show empty view
                 adapter.submitList(new ArrayList<>());
                 updateEmptyView(true);
             }
+        } else {
+            Log.d(TAG, "Not configured - showing error");
         }
     }
 

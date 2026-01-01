@@ -109,7 +109,6 @@ public class ApiClient {
 
             Request.Builder requestBuilder = original.newBuilder()
                     .header("Authorization", "apiToken " + apiToken)
-                    .header("Accept", "application/json")
                     .method(original.method(), original.body());
 
             Request request = requestBuilder.build();

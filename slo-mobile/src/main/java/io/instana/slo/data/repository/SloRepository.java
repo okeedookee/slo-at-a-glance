@@ -28,16 +28,22 @@ import retrofit2.Response;
  */
 public class SloRepository {
     private static final String TAG = "SloRepository";
+    private static final int MAX_RETRIES = 3;
     private static SloRepository instance;
     
-    private final InstanaApiService apiService;
     private final PreferencesManager preferencesManager;
     private final Context context;
 
     private SloRepository(Context context) {
         this.context = context.getApplicationContext();
-        this.apiService = ApiClient.getApiService(context);
         this.preferencesManager = new PreferencesManager(context);
+    }
+    
+    /**
+     * Get the API service instance dynamically to ensure fresh configuration
+     */
+    private InstanaApiService getApiService() {
+        return ApiClient.getApiService(context);
     }
 
     /**
@@ -68,7 +74,7 @@ public class SloRepository {
         MutableLiveData<Result<List<Slo>>> result = new MutableLiveData<>();
         result.setValue(Result.loading());
 
-        apiService.getSloList().enqueue(new Callback<SloListResponse>() {
+        getApiService().getSloList().enqueue(new Callback<SloListResponse>() {
             @Override
             public void onResponse(Call<SloListResponse> call, Response<SloListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -140,7 +146,7 @@ public class SloRepository {
         MutableLiveData<Result<List<Slo>>> result = new MutableLiveData<>();
         result.setValue(Result.loading());
 
-        apiService.getSloList().enqueue(new Callback<SloListResponse>() {
+        getApiService().getSloList().enqueue(new Callback<SloListResponse>() {
             @Override
             public void onResponse(Call<SloListResponse> call, Response<SloListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -212,45 +218,72 @@ public class SloRepository {
             // Create a new list to trigger LiveData change detection
             result.setValue(Result.success(new ArrayList<>(slos)));
 
-            // Fetch report directly using callback instead of observeForever
-            apiService.getSloReport(slo.getId()).enqueue(new Callback<SloReport>() {
-                @Override
-                public void onResponse(Call<SloReport> call, Response<SloReport> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        SloReport report = response.body();
-                        slo.setReport(report);
-                        
-                        // Calculate traffic light status
-                        slo.setStatus(TrafficLightCalculator.calculate(
-                                report.getSli(),
-                                report.getSloTarget(),
-                                report.getErrorBudgetRemaining(),
-                                report.getTotalErrorBudget(),
-                                yellowThreshold
-                        ));
-                        Log.d(TAG, "SLO '" + slo.getName() + "' loaded successfully. Status: " + slo.getStatus());
-                        // Setting loading state will trigger the ViewModel's listener
-                        slo.setLoadingState(Slo.LoadingState.LOADED);
+            // Fetch report with retry logic
+            fetchSloReportWithRetry(slo, slos, result, yellowThreshold, 0);
+        }
+    }
+
+    /**
+     * Fetch SLO report with automatic retry on failure
+     */
+    private void fetchSloReportWithRetry(Slo slo, List<Slo> slos, MutableLiveData<Result<List<Slo>>> result,
+                                         double yellowThreshold, int attemptNumber) {
+        getApiService().getSloReport(slo.getId()).enqueue(new Callback<SloReport>() {
+            @Override
+            public void onResponse(Call<SloReport> call, Response<SloReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    SloReport report = response.body();
+                    slo.setReport(report);
+                    
+                    // Calculate traffic light status
+                    slo.setStatus(TrafficLightCalculator.calculate(
+                            report.getSli(),
+                            report.getSloTarget(),
+                            report.getErrorBudgetRemaining(),
+                            report.getTotalErrorBudget(),
+                            yellowThreshold
+                    ));
+                    Log.d(TAG, "SLO '" + slo.getName() + "' loaded successfully. Status: " + slo.getStatus());
+                    // Setting loading state will trigger the ViewModel's listener
+                    slo.setLoadingState(Slo.LoadingState.LOADED);
+                } else {
+                    // Loading failed - retry if attempts remain
+                    if (attemptNumber < MAX_RETRIES - 1) {
+                        int nextAttempt = attemptNumber + 1;
+                        Log.w(TAG, "Failed to fetch SLO report for '" + slo.getName() + "' (attempt " +
+                              (attemptNumber + 1) + "/" + MAX_RETRIES + "): " + response.code() +
+                              ". Retrying...");
+                        fetchSloReportWithRetry(slo, slos, result, yellowThreshold, nextAttempt);
                     } else {
-                        // Loading failed
-                        String errorMsg = "Failed to fetch SLO report: " + response.code();
+                        String errorMsg = "Failed to fetch SLO report for '" + slo.getName() +
+                                        "' after " + MAX_RETRIES + " attempts: " + response.code();
                         Log.e(TAG, errorMsg);
                         slo.setStatus(null); // Will show as "Unknown"
                         // Setting loading state will trigger the ViewModel's listener
                         slo.setLoadingState(Slo.LoadingState.FAILED);
                     }
                 }
+            }
 
-                @Override
-                public void onFailure(Call<SloReport> call, Throwable t) {
-                    String errorMsg = "Network error: " + t.getMessage();
+            @Override
+            public void onFailure(Call<SloReport> call, Throwable t) {
+                // Network error - retry if attempts remain
+                if (attemptNumber < MAX_RETRIES - 1) {
+                    int nextAttempt = attemptNumber + 1;
+                    Log.w(TAG, "Network error for SLO '" + slo.getName() + "' (attempt " +
+                          (attemptNumber + 1) + "/" + MAX_RETRIES + "): " + t.getMessage() +
+                          ". Retrying...");
+                    fetchSloReportWithRetry(slo, slos, result, yellowThreshold, nextAttempt);
+                } else {
+                    String errorMsg = "Network error for SLO '" + slo.getName() +
+                                    "' after " + MAX_RETRIES + " attempts: " + t.getMessage();
                     Log.e(TAG, errorMsg, t);
                     slo.setStatus(null); // Will show as "Unknown"
                     // Setting loading state will trigger the ViewModel's listener
                     slo.setLoadingState(Slo.LoadingState.FAILED);
                 }
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -263,7 +296,7 @@ public class SloRepository {
         MutableLiveData<Result<SloReport>> result = new MutableLiveData<>();
         result.setValue(Result.loading());
 
-        apiService.getSloReport(sloId).enqueue(new Callback<SloReport>() {
+        getApiService().getSloReport(sloId).enqueue(new Callback<SloReport>() {
             @Override
             public void onResponse(Call<SloReport> call, Response<SloReport> response) {
                 if (response.isSuccessful() && response.body() != null) {

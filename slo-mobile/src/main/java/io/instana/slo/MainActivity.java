@@ -132,10 +132,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh the list when returning from settings
+        android.util.Log.d(TAG, "========================================");
+        android.util.Log.d(TAG, "MainActivity onResume() called");
+        
+        // Ensure fragment is loaded if configured
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment instanceof SloListFragment && preferencesManager.isConfigured()) {
-            ((SloListFragment) fragment).refresh();
+        android.util.Log.d(TAG, "Fragment found: " + (fragment != null ? fragment.getClass().getSimpleName() : "null"));
+        android.util.Log.d(TAG, "Is configured: " + preferencesManager.isConfigured());
+        
+        if (fragment == null && preferencesManager.isConfigured()) {
+            // Fragment doesn't exist but we're configured - load it now
+            android.util.Log.d(TAG, "Fragment is null but configured - loading fragment");
+            loadSloListFragment();
+        } else if (fragment instanceof SloListFragment) {
+            if (preferencesManager.isConfigured()) {
+                android.util.Log.d(TAG, "Calling refresh() on existing SloListFragment");
+                ((SloListFragment) fragment).refresh();
+            } else {
+                android.util.Log.d(TAG, "Not configured - skipping refresh");
+            }
+        } else {
+            android.util.Log.d(TAG, "Fragment is not SloListFragment or not configured - skipping");
         }
+        android.util.Log.d(TAG, "========================================");
     }
 }

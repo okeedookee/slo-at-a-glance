@@ -141,7 +141,9 @@ public class PreferencesManager {
      * @return Set of SLO IDs that should be displayed, or empty set if none selected
      */
     public Set<String> getSelectedSloIds() {
-        return preferences.getStringSet(KEY_SELECTED_SLO_IDS, new HashSet<>());
+        // Always return a new HashSet to avoid SharedPreferences mutation issues
+        Set<String> stored = preferences.getStringSet(KEY_SELECTED_SLO_IDS, new HashSet<>());
+        return stored != null ? new HashSet<>(stored) : new HashSet<>();
     }
 
     /**
@@ -149,7 +151,17 @@ public class PreferencesManager {
      * @param sloIds Set of SLO IDs to display
      */
     public void setSelectedSloIds(Set<String> sloIds) {
-        preferences.edit().putStringSet(KEY_SELECTED_SLO_IDS, new HashSet<>(sloIds)).apply();
+        // Create a new HashSet and commit synchronously to ensure it's saved
+        Set<String> newSet = sloIds != null ? new HashSet<>(sloIds) : new HashSet<>();
+        android.util.Log.d("PreferencesManager", "Saving selected SLO IDs: " + newSet);
+        preferences.edit()
+                .remove(KEY_SELECTED_SLO_IDS)  // Remove first to avoid mutation issues
+                .putStringSet(KEY_SELECTED_SLO_IDS, newSet)
+                .commit();  // Use commit() instead of apply() to ensure immediate save
+        
+        // Verify it was saved
+        Set<String> verified = preferences.getStringSet(KEY_SELECTED_SLO_IDS, new HashSet<>());
+        android.util.Log.d("PreferencesManager", "Verified saved SLO IDs: " + verified);
     }
 
     /**
@@ -167,6 +179,9 @@ public class PreferencesManager {
      * @return true if specific SLOs are selected, false if none selected
      */
     public boolean hasSelectedSlos() {
-        return !getSelectedSloIds().isEmpty();
+        Set<String> selectedIds = getSelectedSloIds();
+        boolean hasSelected = !selectedIds.isEmpty();
+        android.util.Log.d("PreferencesManager", "hasSelectedSlos() = " + hasSelected + ", IDs: " + selectedIds);
+        return hasSelected;
     }
 }

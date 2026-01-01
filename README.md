@@ -19,13 +19,6 @@ An Android mobile application for monitoring Instana Service Level Objectives (S
 - **Min SDK**: API 24 (Android 7.0)
 - **Target SDK**: API 34 (Android 14)
 
-### Key Libraries
-- Retrofit 2.9.0 - REST API client
-- OkHttp 4.12.0 - HTTP client with logging
-- Gson 2.10.1 - JSON serialization
-- MPAndroidChart 3.1.0 - Line charts for visualization
-- AndroidX Security 1.1.0 - Encrypted SharedPreferences
-- Material Design 3 - Modern UI components
 
 ## Project Structure
 ```
@@ -61,24 +54,15 @@ Authentication: `Authorization: apiToken {your-token}`
 2. 🟡 **YELLOW**: Error budget remaining ≤ Yellow threshold
 3. 🟢 **GREEN**: SLO is healthy
 
-## Recent Enhancements
-
-### API Validation Feature
-- Added "Validate" button in Settings > API Configuration
-- Tests connection to `/api/instana/version` endpoint
-- Displays version information on success
-- Shows detailed error messages on failure
-
-### Chart Improvements
-- Hidden individual data point values for cleaner visualization
-- Changed x-axis to display dates only (MM/dd format)
-- Rotated x-axis labels vertically for better readability
-
-### Package Refactoring
-- Migrated from `com.instana.slo` to `io.instana.slo`
-- Updated all 18 Java source files
-- Updated build configuration and namespace
-
+## Screenshots
+<table>
+  <tr>
+    <td><img src="screenshots/main-screen.png" width="200"></td>
+    <td><img src="screenshots/main-by-status.png" width="200"></td>
+    <td><img src="screenshots/main-by-entity.png" width="200"></td>
+    <td><img src="screenshots/slo-details.png" width="200"></td>
+  </tr>
+</table>
 ## Build Instructions
 
 ### Debug Build
@@ -105,10 +89,10 @@ Users configure the app through Settings:
 ## Security
 - API tokens stored using EncryptedSharedPreferences
 - All API communication uses HTTPS
-- ProGuard obfuscation enabled in release builds
 
-## Version
-**Current Version**: 1.0
+## References
+- [Instana API Documentation](https://instana.github.io/openapi/)
+- [Instana SLO Capabilities](https://www.ibm.com/docs/en/instana-observability/1.0.310?topic=instana-service-level-objectives-slos)
 
 ## License
-Developed for Instana API integration.
+Developed for Instana API integration demo only.

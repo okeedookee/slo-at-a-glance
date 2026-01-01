@@ -8,8 +8,11 @@ import java.util.List;
  * Can be application, website, infrastructure, or synthetic
  */
 public class SloEntity {
-    @SerializedName("entityType")
-    private String entityType;
+    @SerializedName("type")
+    private String type;
+    
+    @SerializedName("infraType")
+    private String infraType;
 
     @SerializedName("applicationId")
     private String applicationId;
@@ -23,20 +26,42 @@ public class SloEntity {
     public SloEntity() {
     }
 
-    public SloEntity(String entityType) {
-        this.entityType = entityType;
+    public SloEntity(String type) {
+        this.type = type;
     }
 
+    /**
+     * Get the entity type, inferring it from the populated fields if not explicitly set
+     */
     public String getEntityType() {
-        return entityType;
+        // If type is explicitly set in the API response, use it
+        if (type != null && !type.isEmpty() && !"null".equals(type)) {
+            return type;
+        }
+        
+        // Otherwise, infer the type from which ID field is populated
+        if (applicationId != null && !applicationId.isEmpty()) {
+            return "application";
+        }
+        if (websiteId != null && !websiteId.isEmpty()) {
+            return "website";
+        }
+        if (syntheticTestIds != null && !syntheticTestIds.isEmpty()) {
+            return "synthetic";
+        }
+        if (infraType != null && !infraType.isEmpty()) {
+            return "infrastructure";
+        }
+        
+        return null;
     }
 
     public void setEntityType(String entityType) {
         // Convert string "null" to actual null
         if ("null".equals(entityType)) {
-            this.entityType = null;
+            this.type = null;
         } else {
-            this.entityType = entityType;
+            this.type = entityType;
         }
     }
 
@@ -70,6 +95,7 @@ public class SloEntity {
      * Get the entity ID based on entity type
      */
     public String getEntityId() {
+        String entityType = getEntityType();
         if (entityType == null) {
             return null;
         }
@@ -80,7 +106,7 @@ public class SloEntity {
             case "website":
                 return websiteId;
             case "synthetic":
-                return syntheticTestIds != null && !syntheticTestIds.isEmpty() 
+                return syntheticTestIds != null && !syntheticTestIds.isEmpty()
                     ? syntheticTestIds.get(0) : null;
             default:
                 return null;
@@ -90,10 +116,12 @@ public class SloEntity {
     @Override
     public String toString() {
         return "SloEntity{" +
-                "entityType='" + entityType + '\'' +
+                "type='" + type + '\'' +
+                ", infraType='" + infraType + '\'' +
                 ", applicationId='" + applicationId + '\'' +
                 ", websiteId='" + websiteId + '\'' +
                 ", syntheticTestIds=" + syntheticTestIds +
+                ", inferredType='" + getEntityType() + '\'' +
                 '}';
     }
 }

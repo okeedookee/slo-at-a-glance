@@ -289,6 +289,9 @@ public class SloListFragment extends Fragment implements SloAdapter.OnSloClickLi
         Intent intent = new Intent(requireContext(), SloDetailActivity.class);
         intent.putExtra(SloDetailActivity.EXTRA_SLO_ID, slo.getId());
         intent.putExtra(SloDetailActivity.EXTRA_SLO_NAME, slo.getName());
+        if (slo.getTimeWindow() != null) {
+            intent.putExtra(SloDetailActivity.EXTRA_TIME_WINDOW, slo.getTimeWindow());
+        }
         startActivity(intent);
     }
 }

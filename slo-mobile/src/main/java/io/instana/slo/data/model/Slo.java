@@ -34,6 +34,9 @@ public class Slo {
     @SerializedName("entity")
     private SloEntity entity;
 
+    @SerializedName("timeWindow")
+    private TimeWindow timeWindow;
+
     // Transient fields for UI state (not from API)
     private transient TrafficLightStatus status;
     private transient SloReport report;
@@ -71,6 +74,14 @@ public class Slo {
 
     public void setEntity(SloEntity entity) {
         this.entity = entity;
+    }
+
+    public TimeWindow getTimeWindow() {
+        return timeWindow;
+    }
+
+    public void setTimeWindow(TimeWindow timeWindow) {
+        this.timeWindow = timeWindow;
     }
 
     public TrafficLightStatus getStatus() {

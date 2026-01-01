@@ -91,14 +91,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/sli_label"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textColor="?android:attr/textColorSecondary" />
 
                         <TextView
                             android:id="@+id/sli_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="?android:attr/textColorPrimary"
                             tools:text="99.95%" />
@@ -116,17 +116,106 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/slo_target_label"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textColor="?android:attr/textColorSecondary" />
 
                         <TextView
                             android:id="@+id/slo_target"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="?android:attr/textColorPrimary"
                             tools:text="99.90%" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginVertical="12dp" />
+
+                    <!-- Time Range (From - To) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/time_range_label"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/time_range"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            tools:text="2024-01-01 00:00 - 2024-01-07 23:59" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider"
+                        android:layout_marginVertical="12dp" />
+
+                    <!-- Time Window Type -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/time_window_type_label"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/time_window_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            tools:text="Rolling" />
+                    </LinearLayout>
+
+                    <!-- Time Window Size -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/time_window_size_label"
+                            android:textSize="14sp"
+                            android:textColor="?android:attr/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/time_window_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="?android:attr/textColorPrimary"
+                            tools:text="1 week" />
                     </LinearLayout>
 
                     <!-- Divider -->
@@ -148,14 +237,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/total_error_budget_label"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textColor="?android:attr/textColorSecondary" />
 
                         <TextView
                             android:id="@+id/total_error_budget"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="?android:attr/textColorPrimary"
                             tools:text="1000.00" />
@@ -173,14 +262,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/error_budget_remaining_label"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textColor="?android:attr/textColorSecondary" />
 
                         <TextView
                             android:id="@+id/error_budget_remaining"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textStyle="bold"
                             android:textColor="?android:attr/textColorPrimary"
                             tools:text="750.00" />
@@ -197,14 +286,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@string/error_budget_percentage_label"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:textColor="?android:attr/textColorSecondary" />
 
                         <TextView
                             android:id="@+id/error_budget_percentage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
                             tools:text="75.0%"
                             tools:textColor="@color/status_green" />

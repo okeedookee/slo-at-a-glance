@@ -25,6 +25,15 @@ public class SloReport {
     @SerializedName("errorBudgetRemainChart")
     private Map<String, Double> errorBudgetRemainChart;
 
+    @SerializedName("fromTimestamp")
+    private long fromTimestamp;
+
+    @SerializedName("toTimestamp")
+    private long toTimestamp;
+
+    @SerializedName("timeWindow")
+    private TimeWindow timeWindow;
+
     public SloReport() {
     }
 
@@ -68,9 +77,33 @@ public class SloReport {
         this.errorBudgetRemainChart = errorBudgetRemainChart;
     }
 
+    public long getFromTimestamp() {
+        return fromTimestamp;
+    }
+
+    public void setFromTimestamp(long fromTimestamp) {
+        this.fromTimestamp = fromTimestamp;
+    }
+
+    public long getToTimestamp() {
+        return toTimestamp;
+    }
+
+    public void setToTimestamp(long toTimestamp) {
+        this.toTimestamp = toTimestamp;
+    }
+
+    public TimeWindow getTimeWindow() {
+        return timeWindow;
+    }
+
+    public void setTimeWindow(TimeWindow timeWindow) {
+        this.timeWindow = timeWindow;
+    }
+
     /**
      * Convert the map-based chart data to a list of ChartDataPoint objects
-     * sorted by index for display purposes
+     * with actual timestamps calculated from fromTimestamp and toTimestamp
      */
     public List<ChartDataPoint> getErrorBudgetRemainChart() {
         if (errorBudgetRemainChart == null || errorBudgetRemainChart.isEmpty()) {
@@ -90,11 +123,25 @@ public class SloReport {
         }
         Collections.sort(sortedKeys);
 
-        // Convert to ChartDataPoint objects using index as timestamp
-        for (Integer index : sortedKeys) {
+        // Calculate time interval between data points
+        int numPoints = sortedKeys.size();
+        if (numPoints == 0) {
+            return dataPoints;
+        }
+        
+        long timeInterval = 0;
+        if (numPoints > 1 && toTimestamp > fromTimestamp) {
+            timeInterval = (toTimestamp - fromTimestamp) / (numPoints - 1);
+        }
+
+        // Convert to ChartDataPoint objects with actual timestamps
+        for (int i = 0; i < sortedKeys.size(); i++) {
+            Integer index = sortedKeys.get(i);
             Double value = errorBudgetRemainChart.get(String.valueOf(index));
             if (value != null) {
-                dataPoints.add(new ChartDataPoint(index, value));
+                // Calculate actual timestamp for this data point
+                long timestamp = fromTimestamp + (i * timeInterval);
+                dataPoints.add(new ChartDataPoint(timestamp, value));
             }
         }
 

@@ -36,6 +36,9 @@
     <string name="total_error_budget_label">Total Error Budget</string>
     <string name="error_budget_remaining_label">Error Budget Remaining</string>
     <string name="error_budget_percentage_label">Remaining Percentage</string>
+    <string name="time_range_label">Time Range</string>
+    <string name="time_window_type_label">SLO Time Window</string>
+    <string name="time_window_size_label">SLO Time Window Size</string>
     <string name="error_budget_chart_title">Error Budget Trend</string>
     <string name="error_budget_remaining">Error Budget Remaining</string>
 

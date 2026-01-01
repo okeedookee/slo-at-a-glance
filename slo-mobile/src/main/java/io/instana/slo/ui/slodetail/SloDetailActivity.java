@@ -37,10 +37,12 @@ import java.util.Locale;
 public class SloDetailActivity extends AppCompatActivity {
     public static final String EXTRA_SLO_ID = "slo_id";
     public static final String EXTRA_SLO_NAME = "slo_name";
+    public static final String EXTRA_TIME_WINDOW = "time_window";
 
     private SloDetailViewModel viewModel;
     private String sloId;
     private String sloName;
+    private io.instana.slo.data.model.TimeWindow timeWindow;
 
     // Views
     private TextView sloNameText;
@@ -49,6 +51,9 @@ public class SloDetailActivity extends AppCompatActivity {
     private TextView totalErrorBudgetText;
     private TextView errorBudgetRemainingText;
     private TextView errorBudgetPercentageText;
+    private TextView timeRangeText;
+    private TextView timeWindowTypeText;
+    private TextView timeWindowSizeText;
     private LineChart errorBudgetChart;
     private ProgressBar progressBar;
     private View contentView;
@@ -68,6 +73,7 @@ public class SloDetailActivity extends AppCompatActivity {
         // Get extras
         sloId = getIntent().getStringExtra(EXTRA_SLO_ID);
         sloName = getIntent().getStringExtra(EXTRA_SLO_NAME);
+        timeWindow = (io.instana.slo.data.model.TimeWindow) getIntent().getSerializableExtra(EXTRA_TIME_WINDOW);
 
         if (sloId == null) {
             Toast.makeText(this, R.string.error_invalid_slo, Toast.LENGTH_SHORT).show();
@@ -92,6 +98,9 @@ public class SloDetailActivity extends AppCompatActivity {
         totalErrorBudgetText = findViewById(R.id.total_error_budget);
         errorBudgetRemainingText = findViewById(R.id.error_budget_remaining);
         errorBudgetPercentageText = findViewById(R.id.error_budget_percentage);
+        timeRangeText = findViewById(R.id.time_range);
+        timeWindowTypeText = findViewById(R.id.time_window_type);
+        timeWindowSizeText = findViewById(R.id.time_window_size);
         errorBudgetChart = findViewById(R.id.error_budget_chart);
         progressBar = findViewById(R.id.progress_bar);
         contentView = findViewById(R.id.content_view);
@@ -143,8 +152,26 @@ public class SloDetailActivity extends AppCompatActivity {
         // Display error budget remaining
         errorBudgetRemainingText.setText(String.format(Locale.getDefault(), "%.2f", report.getErrorBudgetRemaining()));
 
-        // Display error budget percentage
+        // Display time range in a single line with shorter format
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        String fromTime = dateTimeFormat.format(new Date(report.getFromTimestamp()));
+        String toTime = dateTimeFormat.format(new Date(report.getToTimestamp()));
+        timeRangeText.setText(fromTime + " - " + toTime);
+
+        // Display time window information from the SLO configuration (passed via intent)
+        if (timeWindow != null) {
+            timeWindowTypeText.setText(timeWindow.getFormattedType());
+            timeWindowSizeText.setText(timeWindow.getFormattedSize());
+        } else {
+            timeWindowTypeText.setText("N/A");
+            timeWindowSizeText.setText("N/A");
+        }
+
+        // Display error budget percentage (ensure it's not negative)
         double percentage = report.getErrorBudgetRemainingPercentage();
+        if (percentage < 0) {
+            percentage = 0;
+        }
         errorBudgetPercentageText.setText(String.format(Locale.getDefault(), "%.1f%%", percentage));
 
         // Set color based on percentage
